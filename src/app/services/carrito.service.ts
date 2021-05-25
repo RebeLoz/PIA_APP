@@ -6,11 +6,12 @@ import { FirebaseauthService } from './firebaseauth.service';
 import { FirestoreService } from './firestore.service';
 import { AlertController, ToastController } from '@ionic/angular';
 
+
 @Injectable({
   providedIn: 'root'
 })
-
 export class CarritoService {
+
   private pedido: Pedido;
   pedido$ = new Subject<Pedido>();
   path = 'carrito/';
@@ -19,111 +20,115 @@ export class CarritoService {
 
   carritoSuscriber: Subscription;
   clienteSuscriber: Subscription;
+
   constructor(public firebaseauthService: FirebaseauthService,
               public firestoreService: FirestoreService,
               public router: Router,
               public alertController: AlertController,
-              public toastController: ToastController) {
-                  this.initCarrito();
-                  this.firebaseauthService.stateAuth().subscribe( res => {
-                        if (res !== null) {
-                            this.uid = res.uid;
-                            this.loadCLiente();
-                        }
-                    });
-                }
+              public toastController: ToastController,) {
 
-    loadCarrito() {
+    //   console.log('CarritoService inicio');
+      this.initCarrito();
+      this.firebaseauthService.stateAuth().subscribe( res => {
+            // console.log(res);
+            if (res !== null) {
+                  this.uid = res.uid;
+                  this.loadCLiente();
+            }
+      });
+   }
+
+  loadCarrito() {
       const path = 'Clientes/' + this.uid + '/' + 'carrito';
       if (this.carritoSuscriber) {
         this.carritoSuscriber.unsubscribe();
       }
       this.carritoSuscriber = this.firestoreService.getDoc<Pedido>(path, this.uid).subscribe( res => {
             //   console.log(res);
-            if (res) {
-                this.pedido = res;
-                this.pedido$.next(this.pedido);
-            } else {
-                this.initCarrito();
-            }
-        });
-    }
+              if (res) {
+                    this.pedido = res;
+                    this.pedido$.next(this.pedido);
+              } else {
+                  this.initCarrito();
+              }
 
-    initCarrito() {
-        this.pedido = {
-            id: this.uid,
-            cliente: this.cliente,
-            productos: [],
-            precioTotal: null,
-            estado: 'enviado',
-            fecha: new Date(),
-            valoracion: null,
-        };
-        this.pedido$.next(this.pedido);
-    }
+      });
+  }
 
-    loadCLiente() {
-        const path = 'Clientes';
-        this.clienteSuscriber = this.firestoreService.getDoc<Cliente>(path, this.uid).subscribe( res => {
+  initCarrito() {
+      this.pedido = {
+          id: this.uid,
+          cliente: this.cliente,
+          productos: [],
+          precioTotal: null,
+          estado: 'enviado',
+          fecha: new Date(),
+          valoracion: null,
+      };
+      this.pedido$.next(this.pedido);
+  }
+
+  loadCLiente() {
+      const path = 'Clientes';
+      this.clienteSuscriber = this.firestoreService.getDoc<Cliente>(path, this.uid).subscribe( res => {
             this.cliente = res;
             // console.log('loadCLiente() ->', res);
             this.loadCarrito();
             this.clienteSuscriber.unsubscribe();
-        });
-    }
+      });
+  }
 
-    getCarrito(): Observable<Pedido> {
-        setTimeout(() => {
-            this.pedido$.next(this.pedido);
-        }, 100);
-        return this.pedido$.asObservable();
-    }
-
-    async addProducto(producto: Producto) {
-        console.log('addProducto ->', this.uid);
-        if (this.uid.length) {
-         const toast = await this.toastController.create({
-           message: 'Agregado al carrito',
-           duration: 2000
-         });
-   
-         toast.present();
-           const item = this.pedido.productos.find( productoPedido => {
-               return (productoPedido.producto.id === producto.id)
-           });
-           if (item !== undefined) {
-               item.cantidad ++;
-           } else {
-              const add: ProductoPedido = {
-                 cantidad: 1,
-                 producto,
-              };
-              this.pedido.productos.push(add);
-           }
-        } else {
-   
-             const alert = await this.alertController.create({
-               cssClass: 'normal',
-               header: 'Alert',
-               subHeader: 'Subtitle',
-               message: 'Debes iniciar sesion',
-               buttons: ['OK']
-             });
-             await alert.present();
-   
-             const { role } = await alert.onDidDismiss();
-             this.router.navigate(['/perfil']);
-             return;
-        }
+  getCarrito(): Observable<Pedido> {
+    setTimeout(() => {
         this.pedido$.next(this.pedido);
-        console.log('en add pedido -> ', this.pedido);
-        const path = 'Clientes/' + this.uid + '/' + this.path;
-        this.firestoreService.createDoc(this.pedido, path, this.uid).then( () => {
-             console.log('añdido con exito');
-        });
-     }
+    }, 100);
+    return this.pedido$.asObservable();
+  }
 
-    removeProducto(producto: Producto) {
+ async addProducto(producto: Producto) {
+     console.log('addProducto ->', this.uid);
+     if (this.uid.length) {
+      const toast = await this.toastController.create({
+        message: 'Agregado al carrito',
+        duration: 2000
+      });
+
+      toast.present();
+        const item = this.pedido.productos.find( productoPedido => {
+            return (productoPedido.producto.id === producto.id)
+        });
+        if (item !== undefined) {
+            item.cantidad ++;
+        } else {
+           const add: ProductoPedido = {
+              cantidad: 1,
+              producto,
+           };
+           this.pedido.productos.push(add);
+        }
+     } else {
+
+          const alert = await this.alertController.create({
+            cssClass: 'normal',
+            header: 'ALERTA',
+            message: 'Debes iniciar sesion o registrarte',
+            buttons: ['OK']
+          });
+          await alert.present();
+
+          const { role } = await alert.onDidDismiss();
+          this.router.navigate(['/perfil']);
+          return;
+     }
+     this.pedido$.next(this.pedido);
+     console.log('en add pedido -> ', this.pedido);
+     const path = 'Clientes/' + this.uid + '/' + this.path;
+     this.firestoreService.createDoc(this.pedido, path, this.uid).then( () => {
+          console.log('añdido con exito');
+     });
+  }
+
+  removeProducto(producto: Producto) {
         console.log('removeProducto ->', this.uid);
         if (this.uid.length) {
             let position = 0;
@@ -143,14 +148,18 @@ export class CarritoService {
                 });
             }
         }
-    }
+  }
 
-    realizarPedido() {}
+  realizarPedido() {
 
-    clearCarrito() {
-        const path = 'Clientes/' + this.uid + '/' + 'carrito';
-        this.firestoreService.deleteDoc(path, this.uid).then( () => {
-            this.initCarrito();
-        });
-    }
+  }
+
+  clearCarrito() {
+      const path = 'Clientes/' + this.uid + '/' + 'carrito';
+      this.firestoreService.deleteDoc(path, this.uid).then( () => {
+          this.initCarrito();
+      });
+  }
+
+
 }
