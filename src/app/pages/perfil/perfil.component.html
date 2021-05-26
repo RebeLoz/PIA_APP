@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="dark">
     <ion-title class="subtitulo ion-text-wrap">
-      Perfil
+      Perfil del usuario
     </ion-title>
 
     <ion-buttons slot="start">
@@ -12,7 +12,7 @@
 
 <ion-content>
   <div *ngIf="!uid.length">
-    <h3 class="subtitulo encabezado">Ingrese sus datos para pedidos</h3>
+    <h1 class="ion-text-center">Ingrese sus datos para pedidos</h1>
     <ion-item>
       <ion-label class="normal" position="floating">Email</ion-label>
       <ion-input name="email" [(ngModel)]="cliente.email" class="normal" type="text" inputmode="text">
@@ -36,11 +36,11 @@
 
   <div calign="left"> 
     <ion-item *ngIf="!ingresarEnable">
-      <ion-label class="normal">Foto refencial:</ion-label>
+      <ion-label class="normal">Foto de referencia:</ion-label>
       <ion-buttons slot="end">
         <ion-button>
           <label for="file-upload">
-            <ion-icon slot="icon-only" name="images"></ion-icon>
+            <ion-icon slot="icon-only" name="folder"></ion-icon>
           </label>
           <input (change)="newImageUpload($event)" id="file-upload" style="display: none" type="file" accept="image/*">
         </ion-button>
@@ -71,7 +71,7 @@
   </div>
 
   <div *ngIf="uid.length">
-    <h3 class="subtitulo encabezado">Sus datos actuales</h3>
+    <h1 class="ion-text-center">Sus datos actuales son:</h1>
     <ion-item>
       <ion-label class="normal">
         Email: {{cliente.email}}
@@ -113,12 +113,12 @@
 <div calign="left">
     <ion-item>
       <ion-label class="normal">
-        Foto refencial:
+        Foto de referencia:
       </ion-label>
       <ion-buttons slot="end">
         <ion-button>
           <label for="file-upload">
-            <ion-icon slot="icon-only" name="images"></ion-icon>
+            <ion-icon slot="icon-only" name="folder"></ion-icon>
           </label>
           <input (change)="newImageUpload($event)" id="file-upload" style="display: none" type="file" accept="image/*">
         </ion-button>

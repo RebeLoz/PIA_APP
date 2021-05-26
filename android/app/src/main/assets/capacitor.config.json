@@ -1,5 +1,5 @@
 {
-  "appId": "com.efecode.wings",
+  "appId": "com.piacode.wings",
   "appName": "WINGS",
   "bundledWebRuntime": false,
   "npmClient": "npm",

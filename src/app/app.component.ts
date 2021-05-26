@@ -3,9 +3,9 @@ import { Platform } from '@ionic/angular';
 // import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 // import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FirebaseauthService } from './services/firebaseauth.service';
-
+import { Subscription } from 'rxjs';
 import { Plugins, StatusBarStyle } from '@capacitor/core';
-
+import { Router } from '@angular/router';
 const { SplashScreen, StatusBar } = Plugins;
 
 @Component({
@@ -16,12 +16,16 @@ const { SplashScreen, StatusBar } = Plugins;
 
 export class AppComponent {
   admin = false;
+
+  suscriberUserInfo: Subscription;
   constructor(
     private platform: Platform,
+    private router: Router,
     // private splashScreen: SplashScreen,
     // private statusBar: StatusBar,
     private firebaseauthService: FirebaseauthService) {
     this.initializeApp();
+    
   }
 
   initializeApp() {
@@ -50,5 +54,10 @@ export class AppComponent {
         this.admin = false;
       }
     });
+  }
+
+  onLogout(){
+    this.firebaseauthService.logout();
+    this.suscriberUserInfo.unsubscribe();
   }
 }

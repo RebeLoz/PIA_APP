@@ -1,17 +1,11 @@
 <ion-header>
   <ion-toolbar color="dark">
     <ion-title class="subtitulo ion-text-wrap">
-      Pedidos
+      Mi pedido
     </ion-title>
 
     <ion-buttons slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
-    </ion-buttons>
-
-    <ion-buttons slot="end">
-      <ion-button [routerLink]="['/perfil']">
-        <ion-icon color="primary" slot="icon-only" name="person-circle"></ion-icon>
-      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -20,7 +14,7 @@
   <div class="m-3">
     <ion-segment mode="ios" (ionChange)="changeSegment($event)" value="nuevos">
       <div value="nuevos">
-        <ion-label class="normal">Pedido reciente</ion-label>
+        <h1 class="ion-text-center">Pedido reciente</h1>
       </div>
     </ion-segment>
   </div>

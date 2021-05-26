@@ -2,6 +2,6 @@
 <resources>
     <string name="app_name">WINGS</string>
     <string name="title_activity_main">WINGS</string>
-    <string name="package_name">com.efecode.wings</string>
-    <string name="custom_url_scheme">com.efecode.wings</string>
+    <string name="package_name">com.piacode.wings</string>
+    <string name="custom_url_scheme">com.piacode.wings</string>
 </resources>

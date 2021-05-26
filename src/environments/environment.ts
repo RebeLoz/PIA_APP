@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
   production: true,
-  ApiKeyGoogleMaps: 'AIzaSyBhQuXDk4lXqVLKDyOk0nxCid3qzIovqTA',
+  ApiKeyGoogleMaps: 'AIzaSyDQT9_ljvvQ8OvwJ3QxGgWghfd5lTkhfnU',
   firebaseConfig :{
     apiKey: "AIzaSyBWZn4R0xrm708Yb5piUO9FbWi2oiYpvbA",
     authDomain: "wings-pia.firebaseapp.com",
