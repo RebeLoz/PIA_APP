@@ -59,28 +59,9 @@ export class PedidosComponent implements OnInit {
     });
   }
 
-  async getPedidosCulminados() {
-    console.log('getPedidosCulminados()');
-    const path = 'pedidos';
-    let startAt = null;
-    if (this.pedidosEntregados.length) {
-      startAt = this.pedidosEntregados[this.pedidosEntregados.length - 1].fecha
-    }
-    this.nuevosSuscriber = this.firestoreService.getCollectionAll<Pedido>(path, 'estado', '==', 'entregado', startAt).subscribe( res => {
-      if (res.length) {
-        console.log('getPedidosCulminados() -> res ', res);
-        res.forEach( pedido => {
-          this.pedidosEntregados.push(pedido);
-        });
-      }
-    });
-  }
-
   cargarMas() {
     if (this.nuevos) {
       this.getPedidosNuevos();
-    } else {
-      this.getPedidosCulminados();
     }
   }
 }

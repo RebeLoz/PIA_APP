@@ -1,4 +1,4 @@
-package com.efecode.gassapp;
+package com.efecode.wings;
 
 import android.os.Bundle;
 

@@ -19,26 +19,24 @@
 <ion-content>
   <div class="m-3">
     <ion-segment mode="ios" (ionChange)="changeSegment($event)" value="nuevos">
-      <ion-segment-button value="nuevos">
-        <ion-label class="normal">nuevos</ion-label>
-      </ion-segment-button>
+      <div value="nuevos">
+        <ion-label class="normal">Pedido reciente</ion-label>
+      </div>
     </ion-segment>
   </div>
+  <ion-card *ngFor="let pedido of pedidos" class="mt-5 mb-5">
+    <ion-item>
+      <ion-label class="normal">
+        Estado: {{pedido.estado}}
+        <p>
+          fecha: {{pedido.fecha.seconds | date }}
+        </p>
+      </ion-label>
+    </ion-item>
+    <app-itemcarrito *ngFor="let producto of pedido.productos" [productoPedido]="producto" [botones]=false>
+    </app-itemcarrito>
+  </ion-card>
 
-  <div *ngIf="nuevos">
-    <ion-card *ngFor="let pedido of pedidos">
-      <ion-item>
-        <ion-label class="normal">
-          Estado: {{pedido.estado}}
-          <p>
-            fecha: {{pedido.fecha.seconds*1000 | date }}
-          </p>
-        </ion-label>
-      </ion-item>
-      <app-itemcarrito *ngFor="let producto of pedido.productos" [productoPedido]="producto" [botones]=false>
-      </app-itemcarrito>
-    </ion-card>
-  </div>
 
   <div *ngIf="!nuevos">
     <ion-card *ngFor="let pedido of pedidosEntregados">
